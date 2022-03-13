@@ -3,7 +3,7 @@ package com.maxtrain.bootcamp.user;
 import javax.persistence.*;
 
 @Entity
-@Table(uniqueConstraints=@UniqueConstraint(name="UIDX_username", columnNames= {"username"}))
+@Table(uniqueConstraints=@UniqueConstraint(name="UIDX_username", columnNames={"username"}))
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
