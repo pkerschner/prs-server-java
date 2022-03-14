@@ -53,7 +53,7 @@ public class VendorController {
 	
 	@SuppressWarnings("rawtypes")
 	@DeleteMapping("{id}")
-	public ResponseEntity deleteVendor(@PathVariable int id) {		
+	public ResponseEntity deleteVendor(@PathVariable int id) {
 		var vendor = vendRepo.findById(id);
 		if(vendor.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

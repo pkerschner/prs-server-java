@@ -53,7 +53,7 @@ public class UserController {
 	
 	@SuppressWarnings("rawtypes")
 	@DeleteMapping("{id}")
-	public ResponseEntity deleteUser(@PathVariable int id) {		
+	public ResponseEntity deleteUser(@PathVariable int id) {
 		var user = userRepo.findById(id);
 		if(user.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
