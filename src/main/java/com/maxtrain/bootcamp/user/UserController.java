@@ -13,6 +13,15 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepo;
 	
+	@GetMapping("{username}/{password}")
+	public ResponseEntity<User> login(@PathVariable String username, @PathVariable String password) {
+		var user = userRepo.findByUsernameAndPassword(username, password);
+		if (user.isEmpty()) {
+			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+	}
+	
 	@GetMapping
 	public ResponseEntity<Iterable<User>> getUsers() {
 		var users = userRepo.findAll();
