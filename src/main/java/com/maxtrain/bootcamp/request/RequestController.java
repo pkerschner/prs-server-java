@@ -28,7 +28,7 @@ public class RequestController {
 		return new ResponseEntity<Request>(request.get(), HttpStatus.OK);
 	}
 	
-	@GetMapping("reviews/{userId")
+	@GetMapping("reviews/{userId}")
 	public ResponseEntity<Iterable<Request>> getRequestsInReview(@PathVariable int userId) {
 		var requests = reqRepo.findByStatusAndUserIdNot("REVIEW", userId);
 		return new ResponseEntity<Iterable<Request>>(requests, HttpStatus.OK);
