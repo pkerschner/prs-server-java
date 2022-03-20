@@ -54,12 +54,12 @@ public class RequestlineController {
 		if(requestline == null || requestline.getId() != 0) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		reqlnRepo.save(requestline);
+		var reqln = reqlnRepo.save(requestline);
 		var resEnt = this.recalculateRequestTotal(requestline.getRequest().getId());
 		if(resEnt.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Recalculate Request Total Failed");
 		}
-		return new ResponseEntity<Requestline>(requestline, HttpStatus.CREATED);
+		return new ResponseEntity<Requestline>(reqln, HttpStatus.CREATED);
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -68,8 +68,8 @@ public class RequestlineController {
 		if(requestline == null || requestline.getId() != id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		var reqlOpt = reqlnRepo.findById(requestline.getId());
-		if(reqlOpt.isEmpty()) {
+		var reqln = reqlnRepo.findById(requestline.getId());
+		if(reqln.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		reqlnRepo.save(requestline);
@@ -82,16 +82,14 @@ public class RequestlineController {
 	
 	@SuppressWarnings("rawtypes")
 	@DeleteMapping("{id}")
-	public ResponseEntity deleteRequestline(@PathVariable int id, @RequestBody Requestline requestline) throws Exception {
-		if(requestline == null || requestline.getId() != id) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-		var reqlOpt = reqlnRepo.findById(requestline.getId());
-		if(reqlOpt.isEmpty()) {
+	public ResponseEntity deleteRequestline(@PathVariable int id) throws Exception {		
+		var requestline = reqlnRepo.findById(id);
+		if(requestline.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		reqlnRepo.delete(requestline);
-		var resEnt = this.recalculateRequestTotal(requestline.getRequest().getId());
+		var request =requestline.get();
+		reqlnRepo.delete(request);
+		var resEnt = this.recalculateRequestTotal(request.getId());
 		if(resEnt.getStatusCode() != HttpStatus.OK) {
 			throw new Exception("Recalculate Request Total Failed");
 		}
